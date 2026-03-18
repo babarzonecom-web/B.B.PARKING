@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>駐車料金メモ</title>
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: #2e2e2e;
+    --accent: #f0c040;
+    --accent2: #4ecdc4;
+    --cash: #a8e6a3;
+    --card: #a3c4e6;
+    --text: #f0ede8;
+    --muted: #888;
+    --danger: #e88;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 18px 20px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  header h1 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+  }
+
+  header span {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Tab nav */
+  .tab-nav {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 12px 8px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* INPUT TAB */
+  .tab-content { display: none; padding: 20px 16px; }
+  .tab-content.active { display: block; }
+
+  .date-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .date-row label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    min-width: 40px;
+  }
+
+  input[type="date"] {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="date"]:focus { border-color: var(--accent); }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* Amount buttons */
+  .amount-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .amount-btn {
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 16px 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .amount-btn.selected {
+    border-color: var(--accent);
+    background: rgba(240,192,64,0.12);
+    color: var(--accent);
+  }
+
+  .amount-btn .yen {
+    font-size: 0.65rem;
+    display: block;
+    color: var(--muted);
+    margin-bottom: 2px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+  }
+
+  .amount-btn.selected .yen { color: var(--accent); opacity: 0.7; }
+
+  /* Custom input */
+  .custom-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 0 14px;
+    transition: border-color 0.15s;
+  }
+
+  .custom-input-wrap.selected {
+    border-color: var(--accent);
+    background: rgba(240,192,64,0.12);
+  }
+
+  .custom-input-wrap span {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .custom-input-wrap input[type="number"] {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 1.05rem;
+    padding: 14px 4px;
+    outline: none;
+    width: 100%;
+  }
+
+  /* Payment method */
+  .method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .method-btn {
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .method-btn .icon { font-size: 1.2rem; }
+
+  .method-btn[data-method="card"].selected {
+    border-color: var(--card);
+    background: rgba(163,196,230,0.12);
+    color: var(--card);
+  }
+
+  .method-btn[data-method="cash"].selected {
+    border-color: var(--cash);
+    background: rgba(168,230,163,0.12);
+    color: var(--cash);
+  }
+
+  /* Add button */
+  .add-btn {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    color: #111;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    padding: 16px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .add-btn:active { transform: scale(0.98); opacity: 0.85; }
+  .add-btn:disabled { opacity: 0.35; cursor: default; }
+
+  /* HISTORY TAB */
+  .month-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    margin-top: 4px;
+  }
+
+  .month-nav {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1.1rem;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s;
+  }
+
+  .month-nav:hover { border-color: var(--accent); }
+
+  .month-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Summary cards */
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .summary-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  .summary-card .s-label {
+    font-size: 0.68rem;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+  }
+
+  .summary-card .s-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+
+  .summary-card.card-sum .s-value { color: var(--card); }
+  .summary-card.cash-sum .s-value { color: var(--cash); }
+  .summary-card.total-sum .s-value { color: var(--accent); }
+
+  /* Record list */
+  .record-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .record-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .record-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    min-width: 50px;
+  }
+
+  .record-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.05rem;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .method-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+  }
+
+  .method-badge.card {
+    background: rgba(163,196,230,0.18);
+    color: var(--card);
+    border: 1px solid rgba(163,196,230,0.3);
+  }
+
+  .method-badge.cash {
+    background: rgba(168,230,163,0.18);
+    color: var(--cash);
+    border: 1px solid rgba(168,230,163,0.3);
+  }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    color: var(--border);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color 0.15s;
+  }
+
+  .delete-btn:hover { color: var(--danger); }
+
+  .empty-msg {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+    padding: 32px 0;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--accent);
+    color: #111;
+    font-weight: 900;
+    font-size: 0.85rem;
+    padding: 10px 20px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: all 0.25s;
+    pointer-events: none;
+    z-index: 999;
+    letter-spacing: 0.06em;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🅿 駐車料金メモ</h1>
+  <span id="today-display"></span>
+</header>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('input')">記録する</button>
+  <button class="tab-btn" onclick="switchTab('history')">履歴・集計</button>
+</div>
+
+<!-- INPUT TAB -->
+<div id="tab-input" class="tab-content active">
+  <div class="date-row">
+    <label>日付</label>
+    <input type="date" id="input-date">
+  </div>
+
+  <div class="section-label">料金</div>
+  <div class="amount-grid">
+    <button class="amount-btn" data-amount="300" onclick="selectAmount(this)">
+      <span class="yen">¥</span>300
+    </button>
+    <button class="amount-btn" data-amount="400" onclick="selectAmount(this)">
+      <span class="yen">¥</span>400
+    </button>
+    <div class="custom-input-wrap" id="custom-wrap" onclick="selectCustom()">
+      <span>¥</span>
+      <input type="number" id="custom-amount" placeholder="その他" min="0" step="10"
+        onfocus="selectCustom()" oninput="onCustomInput()">
+    </div>
+  </div>
+
+  <div class="section-label">支払い方法</div>
+  <div class="method-grid">
+    <button class="method-btn" data-method="card" onclick="selectMethod(this)">
+      <span class="icon">💳</span>カード
+    </button>
+    <button class="method-btn" data-method="cash" onclick="selectMethod(this)">
+      <span class="icon">💴</span>現金
+    </button>
+  </div>
+
+  <button class="add-btn" id="add-btn" onclick="addRecord()" disabled>追加する</button>
+</div>
+
+<!-- HISTORY TAB -->
+<div id="tab-history" class="tab-content">
+  <div class="month-header">
+    <button class="month-nav" onclick="changeMonth(-1)">‹</button>
+    <div class="month-label" id="month-label"></div>
+    <button class="month-nav" onclick="changeMonth(1)">›</button>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card card-sum">
+      <div class="s-label">💳 カード</div>
+      <div class="s-value" id="sum-card">¥0</div>
+    </div>
+    <div class="summary-card cash-sum">
+      <div class="s-label">💴 現金</div>
+      <div class="s-value" id="sum-cash">¥0</div>
+    </div>
+    <div class="summary-card total-sum">
+      <div class="s-label">合計</div>
+      <div class="s-value" id="sum-total">¥0</div>
+    </div>
+  </div>
+
+  <div class="record-list" id="record-list"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // --- State ---
+  let records = JSON.parse(localStorage.getItem('parkingRecords') || '[]');
+  let selectedAmount = null;
+  let selectedMethod = null;
+  let isCustom = false;
+  let viewYear, viewMonth;
+
+  // --- Init ---
+  function init() {
+    const now = new Date();
+    const todayStr = toDateStr(now);
+    document.getElementById('input-date').value = todayStr;
+    document.getElementById('today-display').textContent = formatDate(todayStr);
+
+    viewYear = now.getFullYear();
+    viewMonth = now.getMonth() + 1;
+
+    renderHistory();
+  }
+
+  function toDateStr(d) {
+    return d.toFullYear
+      ? d
+      : `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  function formatDate(str) {
+    const [y,m,d] = str.split('-');
+    return `${y}年${parseInt(m)}月${parseInt(d)}日`;
+  }
+
+  function formatMoney(n) {
+    return '¥' + n.toLocaleString();
+  }
+
+  // --- Amount selection ---
+  function selectAmount(btn) {
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('custom-wrap').classList.remove('selected');
+    document.getElementById('custom-amount').value = '';
+    btn.classList.add('selected');
+    selectedAmount = parseInt(btn.dataset.amount);
+    isCustom = false;
+    checkReady();
+  }
+
+  function selectCustom() {
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('custom-wrap').classList.add('selected');
+    isCustom = true;
+    selectedAmount = parseInt(document.getElementById('custom-amount').value) || null;
+    checkReady();
+  }
+
+  function onCustomInput() {
+    const v = parseInt(document.getElementById('custom-amount').value);
+    selectedAmount = v > 0 ? v : null;
+    checkReady();
+  }
+
+  // --- Method selection ---
+  function selectMethod(btn) {
+    document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedMethod = btn.dataset.method;
+    checkReady();
+  }
+
+  function checkReady() {
+    document.getElementById('add-btn').disabled = !(selectedAmount && selectedMethod);
+  }
+
+  // --- Add record ---
+  function addRecord() {
+    const date = document.getElementById('input-date').value;
+    if (!date || !selectedAmount || !selectedMethod) return;
+
+    const record = {
+      id: Date.now(),
+      date,
+      amount: selectedAmount,
+      method: selectedMethod
+    };
+
+    records.push(record);
+    records.sort((a,b) => b.date.localeCompare(a.date));
+    save();
+
+    // reset
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('custom-wrap').classList.remove('selected');
+    document.getElementById('custom-amount').value = '';
+    document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('selected'));
+    selectedAmount = null;
+    selectedMethod = null;
+    isCustom = false;
+    checkReady();
+
+    showToast('記録しました！');
+
+    // refresh history if visible
+    const [y,m] = date.split('-');
+    viewYear = parseInt(y);
+    viewMonth = parseInt(m);
+    renderHistory();
+  }
+
+  // --- History ---
+  function changeMonth(delta) {
+    viewMonth += delta;
+    if (viewMonth > 12) { viewMonth = 1; viewYear++; }
+    if (viewMonth < 1)  { viewMonth = 12; viewYear--; }
+    renderHistory();
+  }
+
+  function renderHistory() {
+    document.getElementById('month-label').textContent = `${viewYear}年${viewMonth}月`;
+
+    const monthStr = `${viewYear}-${String(viewMonth).padStart(2,'0')}`;
+    const filtered = records.filter(r => r.date.startsWith(monthStr));
+
+    const sumCard = filtered.filter(r=>r.method==='card').reduce((s,r)=>s+r.amount,0);
+    const sumCash = filtered.filter(r=>r.method==='cash').reduce((s,r)=>s+r.amount,0);
+
+    document.getElementById('sum-card').textContent = formatMoney(sumCard);
+    document.getElementById('sum-cash').textContent = formatMoney(sumCash);
+    document.getElementById('sum-total').textContent = formatMoney(sumCard + sumCash);
+
+    const list = document.getElementById('record-list');
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="empty-msg">この月の記録はありません</div>';
+      return;
+    }
+
+    list.innerHTML = filtered.map(r => `
+      <div class="record-item" id="rec-${r.id}">
+        <div class="record-date">${formatDateShort(r.date)}</div>
+        <div class="record-amount">${formatMoney(r.amount)}</div>
+        <span class="method-badge ${r.method}">${r.method==='card'?'カード':'現金'}</span>
+        <button class="delete-btn" onclick="deleteRecord(${r.id})" title="削除">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function formatDateShort(str) {
+    const [,m,d] = str.split('-');
+    return `${parseInt(m)}/${parseInt(d)}`;
+  }
+
+  function deleteRecord(id) {
+    records = records.filter(r => r.id !== id);
+    save();
+    renderHistory();
+    showToast('削除しました');
+  }
+
+  // --- Tab switch ---
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    event.currentTarget.classList.add('active');
+    if (tab === 'history') renderHistory();
+  }
+
+  // --- Toast ---
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  // --- Storage ---
+  function save() {
+    localStorage.setItem('parkingRecords', JSON.stringify(records));
+  }
+
+  // --- Date helper ---
+  Date.prototype.toFullYear = undefined; // not needed
+
+  init();
+</script>
+</body>
+</html>
