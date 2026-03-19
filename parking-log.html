@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>駐車料金メモ</title>
-<link rel="apple-touch-icon" href="icon.svg">
-<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -233,6 +233,15 @@
 
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  .export-btn {
+    width: 100%; background: none; border: 1px solid var(--border); border-radius: 12px;
+    color: var(--muted); font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 0.85rem; font-weight: 700; padding: 12px; cursor: pointer;
+    margin-top: 16px; letter-spacing: 0.06em; transition: border-color 0.15s, color 0.15s;
+  }
+
+  .export-btn:hover { border-color: var(--accent); color: var(--accent); }
+
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -288,6 +297,7 @@
     <div class="summary-card total-sum"><div class="s-label">合計</div><div class="s-value" id="sum-total">¥0</div></div>
   </div>
   <div class="record-list" id="record-list"></div>
+  <button class="export-btn" onclick="exportParking()">📋 全データをコピー</button>
 </div>
 
 <!-- EXPENSE INPUT -->
@@ -325,6 +335,7 @@
   </div>
   <div class="cat-totals" id="cat-totals"></div>
   <div class="record-list" id="exp-record-list"></div>
+  <button class="export-btn" onclick="exportExpense()">📋 全データをコピー</button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -519,6 +530,42 @@
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  function exportParking() {
+    if (!records.length) { showToast('データがありません'); return; }
+    const lines = ['【駐車料金データ】', ''];
+    let lastMonth = '';
+    records.forEach(r => {
+      const month = r.date.slice(0,7);
+      if (month !== lastMonth) {
+        if (lastMonth) lines.push('');
+        lines.push(`▼ ${parseInt(month.slice(0,4))}年${parseInt(month.slice(5))}月`);
+        lastMonth = month;
+      }
+      lines.push(`${fmtDate(r.date)}  ${fmt(r.amount)}  ${r.method==='card'?'カード':'現金'}`);
+    });
+    lines.push('');
+    lines.push(`合計: ${fmt(records.reduce((s,r)=>s+r.amount,0))}`);
+    navigator.clipboard.writeText(lines.join('\n')).then(() => showToast('コピーしました！'));
+  }
+
+  function exportExpense() {
+    if (!expenses.length) { showToast('データがありません'); return; }
+    const lines = ['【経費データ】', ''];
+    let lastMonth = '';
+    expenses.forEach(r => {
+      const month = r.date.slice(0,7);
+      if (month !== lastMonth) {
+        if (lastMonth) lines.push('');
+        lines.push(`▼ ${parseInt(month.slice(0,4))}年${parseInt(month.slice(5))}月`);
+        lastMonth = month;
+      }
+      lines.push(`${fmtDate(r.date)}  ${fmt(r.amount)}  ${r.cat}`);
+    });
+    lines.push('');
+    lines.push(`合計: ${fmt(expenses.reduce((s,r)=>s+r.amount,0))}`);
+    navigator.clipboard.writeText(lines.join('\n')).then(() => showToast('コピーしました！'));
   }
 
   init();
