@@ -14,9 +14,9 @@
     --surface2: #242424;
     --border: #2e2e2e;
     --accent: #f0c040;
-    --accent2: #4ecdc4;
     --cash: #a8e6a3;
     --card: #a3c4e6;
+    --exp: #c4a3e6;
     --text: #f0ede8;
     --muted: #888;
     --danger: #e88;
@@ -35,7 +35,7 @@
   header {
     background: var(--surface);
     border-bottom: 2px solid var(--accent);
-    padding: 18px 20px 14px;
+    padding: 16px 18px 12px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -44,25 +44,14 @@
     gap: 10px;
   }
 
-  header h1 {
-    font-size: 1.1rem;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    color: var(--accent);
-  }
+  header h1 { font-size: 1.05rem; font-weight: 900; letter-spacing: 0.05em; color: var(--accent); }
+  header span { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
 
-  header span {
-    font-size: 0.78rem;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* Tab nav */
   .tab-nav {
     display: flex;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 0 16px;
+    padding: 0 4px;
   }
 
   .tab-btn {
@@ -71,37 +60,22 @@
     border: none;
     color: var(--muted);
     font-family: 'Zen Kaku Gothic New', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    padding: 12px 8px;
+    padding: 11px 2px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: all 0.15s;
+    white-space: nowrap;
   }
 
-  .tab-btn.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-  /* INPUT TAB */
-  .tab-content { display: none; padding: 20px 16px; }
+  .tab-content { display: none; padding: 18px 16px; }
   .tab-content.active { display: block; }
 
-  .date-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .date-row label {
-    font-size: 0.78rem;
-    color: var(--muted);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    min-width: 40px;
-  }
+  .date-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .date-row label { font-size: 0.75rem; color: var(--muted); font-weight: 700; letter-spacing: 0.08em; min-width: 36px; }
 
   input[type="date"] {
     background: var(--surface2);
@@ -112,315 +86,153 @@
     font-size: 0.9rem;
     padding: 9px 12px;
     outline: none;
-    transition: border-color 0.15s;
+    color-scheme: dark;
   }
 
   input[type="date"]:focus { border-color: var(--accent); }
 
   .section-label {
-    font-size: 0.72rem;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 10px;
+    font-size: 0.7rem; font-weight: 900; letter-spacing: 0.12em;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 10px;
   }
 
-  /* Amount buttons */
-  .amount-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-  }
+  .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
 
   .amount-btn {
-    background: var(--surface2);
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 1.1rem;
-    font-weight: 500;
-    padding: 16px 8px;
-    cursor: pointer;
-    transition: all 0.15s;
-    position: relative;
+    background: var(--surface2); border: 2px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'DM Mono', monospace; font-size: 1.1rem;
+    font-weight: 500; padding: 16px 8px; cursor: pointer;
   }
 
-  .amount-btn.selected {
-    border-color: var(--accent);
-    background: rgba(240,192,64,0.12);
-    color: var(--accent);
-  }
-
-  .amount-btn .yen {
-    font-size: 0.65rem;
-    display: block;
-    color: var(--muted);
-    margin-bottom: 2px;
-    font-family: 'Zen Kaku Gothic New', sans-serif;
-  }
-
+  .amount-btn.selected { border-color: var(--accent); background: rgba(240,192,64,0.12); color: var(--accent); }
+  .amount-btn .yen { font-size: 0.65rem; display: block; color: var(--muted); margin-bottom: 2px; font-family: 'Zen Kaku Gothic New', sans-serif; }
   .amount-btn.selected .yen { color: var(--accent); opacity: 0.7; }
 
-  /* Custom input */
   .custom-input-wrap {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--surface2);
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    padding: 0 14px;
-    transition: border-color 0.15s;
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2); border: 2px solid var(--border);
+    border-radius: 10px; padding: 0 12px;
   }
 
-  .custom-input-wrap.selected {
-    border-color: var(--accent);
-    background: rgba(240,192,64,0.12);
-  }
-
-  .custom-input-wrap span {
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-
+  .custom-input-wrap.selected { border-color: var(--accent); background: rgba(240,192,64,0.12); }
+  .custom-input-wrap span { color: var(--muted); font-size: 0.9rem; }
   .custom-input-wrap input[type="number"] {
-    background: none;
-    border: none;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 1.05rem;
-    padding: 14px 4px;
-    outline: none;
-    width: 100%;
+    background: none; border: none; color: var(--text);
+    font-family: 'DM Mono', monospace; font-size: 1.05rem;
+    padding: 14px 4px; outline: none; width: 100%;
   }
 
-  /* Payment method */
-  .method-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 24px;
+  .exp-amount-wrap {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2); border: 2px solid var(--border);
+    border-radius: 10px; padding: 0 14px; margin-bottom: 18px;
   }
+
+  .exp-amount-wrap:focus-within { border-color: var(--accent); }
+  .exp-amount-wrap span { color: var(--muted); font-size: 1rem; }
+  .exp-amount-wrap input {
+    background: none; border: none; color: var(--text);
+    font-family: 'DM Mono', monospace; font-size: 1.2rem;
+    padding: 16px 4px; outline: none; width: 100%;
+  }
+
+  .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
 
   .method-btn {
-    background: var(--surface2);
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: 'Zen Kaku Gothic New', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    padding: 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    background: var(--surface2); border: 2px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 0.95rem; font-weight: 700; padding: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
   }
 
-  .method-btn .icon { font-size: 1.2rem; }
+  .method-btn[data-method="card"].selected { border-color: var(--card); background: rgba(163,196,230,0.12); color: var(--card); }
+  .method-btn[data-method="cash"].selected { border-color: var(--cash); background: rgba(168,230,163,0.12); color: var(--cash); }
 
-  .method-btn[data-method="card"].selected {
-    border-color: var(--card);
-    background: rgba(163,196,230,0.12);
-    color: var(--card);
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+
+  .cat-btn {
+    background: var(--surface2); border: 2px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 0.85rem; font-weight: 700; padding: 13px 8px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s;
   }
 
-  .method-btn[data-method="cash"].selected {
-    border-color: var(--cash);
-    background: rgba(168,230,163,0.12);
-    color: var(--cash);
-  }
+  .cat-btn.selected { border-color: var(--exp); background: rgba(196,163,230,0.12); color: var(--exp); }
 
-  /* Add button */
   .add-btn {
-    width: 100%;
-    background: var(--accent);
-    border: none;
-    border-radius: 12px;
-    color: #111;
-    font-family: 'Zen Kaku Gothic New', sans-serif;
-    font-size: 1rem;
-    font-weight: 900;
-    padding: 16px;
-    cursor: pointer;
-    letter-spacing: 0.08em;
-    transition: opacity 0.15s, transform 0.1s;
+    width: 100%; background: var(--accent); border: none; border-radius: 12px;
+    color: #111; font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 1rem; font-weight: 900; padding: 16px; cursor: pointer;
+    letter-spacing: 0.08em; transition: opacity 0.15s, transform 0.1s;
   }
 
   .add-btn:active { transform: scale(0.98); opacity: 0.85; }
-  .add-btn:disabled { opacity: 0.35; cursor: default; }
+  .add-btn:disabled { opacity: 0.35; cursor: default; background: #333; color: #666; }
 
-  /* HISTORY TAB */
-  .month-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    margin-top: 4px;
-  }
+  .month-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
 
   .month-nav {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-size: 1.1rem;
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.15s;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-size: 1.1rem; width: 36px; height: 36px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
   }
 
-  .month-nav:hover { border-color: var(--accent); }
+  .month-label { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 500; flex: 1; text-align: center; }
 
-  .month-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 1rem;
-    font-weight: 500;
-    flex: 1;
-    text-align: center;
+  .summary-row { display: grid; gap: 8px; margin-bottom: 18px; }
+  .summary-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .summary-row.two   { grid-template-columns: 1fr 1fr; }
+
+  .summary-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .summary-card .s-label { font-size: 0.65rem; color: var(--muted); font-weight: 700; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .summary-card .s-value { font-family: 'DM Mono', monospace; font-size: 0.95rem; font-weight: 500; }
+
+  .card-sum .s-value { color: var(--card); }
+  .cash-sum .s-value { color: var(--cash); }
+  .total-sum .s-value { color: var(--accent); }
+  .exp-sum .s-value { color: var(--exp); }
+
+  .cat-totals { margin-bottom: 16px; }
+
+  .cat-total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 12px; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 6px; font-size: 0.88rem;
   }
 
-  /* Summary cards */
-  .summary-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
+  .cat-total-row .cat-name { color: var(--muted); }
+  .cat-total-row .cat-val { font-family: 'DM Mono', monospace; color: var(--exp); font-weight: 500; }
 
-  .summary-card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 10px;
-    text-align: center;
-  }
-
-  .summary-card .s-label {
-    font-size: 0.68rem;
-    color: var(--muted);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    margin-bottom: 5px;
-  }
-
-  .summary-card .s-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.05rem;
-    font-weight: 500;
-  }
-
-  .summary-card.card-sum .s-value { color: var(--card); }
-  .summary-card.cash-sum .s-value { color: var(--cash); }
-  .summary-card.total-sum .s-value { color: var(--accent); }
-
-  /* Record list */
   .record-list { display: flex; flex-direction: column; gap: 8px; }
 
   .record-item {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    animation: fadeIn 0.2s ease;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 11px 13px; display: flex; align-items: center; gap: 10px;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .record-date { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--muted); min-width: 36px; }
+  .record-amount { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 500; flex: 1; }
 
-  .record-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--muted);
-    min-width: 50px;
-  }
+  .badge { font-size: 0.68rem; font-weight: 700; padding: 3px 7px; border-radius: 20px; letter-spacing: 0.05em; white-space: nowrap; }
+  .badge.card { background: rgba(163,196,230,0.18); color: var(--card); border: 1px solid rgba(163,196,230,0.3); }
+  .badge.cash { background: rgba(168,230,163,0.18); color: var(--cash); border: 1px solid rgba(168,230,163,0.3); }
+  .badge.cat  { background: rgba(196,163,230,0.18); color: var(--exp);  border: 1px solid rgba(196,163,230,0.3); }
 
-  .record-amount {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.05rem;
-    font-weight: 500;
-    flex: 1;
-  }
-
-  .method-badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 20px;
-    letter-spacing: 0.06em;
-  }
-
-  .method-badge.card {
-    background: rgba(163,196,230,0.18);
-    color: var(--card);
-    border: 1px solid rgba(163,196,230,0.3);
-  }
-
-  .method-badge.cash {
-    background: rgba(168,230,163,0.18);
-    color: var(--cash);
-    border: 1px solid rgba(168,230,163,0.3);
-  }
-
-  .delete-btn {
-    background: none;
-    border: none;
-    color: var(--border);
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 4px;
-    transition: color 0.15s;
-  }
-
+  .delete-btn { background: none; border: none; color: var(--border); font-size: 1rem; cursor: pointer; padding: 2px 4px; }
   .delete-btn:hover { color: var(--danger); }
 
-  .empty-msg {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.88rem;
-    padding: 32px 0;
-  }
+  .empty-msg { text-align: center; color: var(--muted); font-size: 0.88rem; padding: 32px 0; }
 
-  /* Toast */
   .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
+    position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(20px);
-    background: var(--accent);
-    color: #111;
-    font-weight: 900;
-    font-size: 0.85rem;
-    padding: 10px 20px;
-    border-radius: 20px;
-    opacity: 0;
-    transition: all 0.25s;
-    pointer-events: none;
-    z-index: 999;
-    letter-spacing: 0.06em;
+    background: var(--accent); color: #111; font-weight: 900;
+    font-size: 0.85rem; padding: 10px 20px; border-radius: 20px;
+    opacity: 0; transition: all 0.25s; pointer-events: none; z-index: 999; letter-spacing: 0.06em;
   }
 
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -434,118 +246,125 @@
 </header>
 
 <div class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('input')">記録する</button>
-  <button class="tab-btn" onclick="switchTab('history')">履歴・集計</button>
+  <button class="tab-btn active" onclick="switchTab('input', this)">🅿 記録</button>
+  <button class="tab-btn" onclick="switchTab('history', this)">🅿 履歴</button>
+  <button class="tab-btn" onclick="switchTab('exp-input', this)">💴 経費</button>
+  <button class="tab-btn" onclick="switchTab('exp-history', this)">💴 履歴</button>
 </div>
 
-<!-- INPUT TAB -->
+<!-- PARKING INPUT -->
 <div id="tab-input" class="tab-content active">
   <div class="date-row">
     <label>日付</label>
     <input type="date" id="input-date">
   </div>
-
   <div class="section-label">料金</div>
   <div class="amount-grid">
-    <button class="amount-btn" data-amount="300" onclick="selectAmount(this)">
-      <span class="yen">¥</span>300
-    </button>
-    <button class="amount-btn" data-amount="400" onclick="selectAmount(this)">
-      <span class="yen">¥</span>400
-    </button>
+    <button class="amount-btn" data-amount="300" onclick="selectAmount(this)"><span class="yen">¥</span>300</button>
+    <button class="amount-btn" data-amount="400" onclick="selectAmount(this)"><span class="yen">¥</span>400</button>
     <div class="custom-input-wrap" id="custom-wrap" onclick="selectCustom()">
       <span>¥</span>
-      <input type="number" id="custom-amount" placeholder="その他" min="0" step="10"
-        onfocus="selectCustom()" oninput="onCustomInput()">
+      <input type="number" id="custom-amount" placeholder="その他" min="0" step="10" onfocus="selectCustom()" oninput="onCustomInput()">
     </div>
   </div>
-
   <div class="section-label">支払い方法</div>
   <div class="method-grid">
-    <button class="method-btn" data-method="card" onclick="selectMethod(this)">
-      <span class="icon">💳</span>カード
-    </button>
-    <button class="method-btn" data-method="cash" onclick="selectMethod(this)">
-      <span class="icon">💴</span>現金
-    </button>
+    <button class="method-btn" data-method="card" onclick="selectMethod(this)">💳 カード</button>
+    <button class="method-btn" data-method="cash" onclick="selectMethod(this)">💴 現金</button>
   </div>
-
   <button class="add-btn" id="add-btn" onclick="addRecord()" disabled>追加する</button>
 </div>
 
-<!-- HISTORY TAB -->
+<!-- PARKING HISTORY -->
 <div id="tab-history" class="tab-content">
   <div class="month-header">
     <button class="month-nav" onclick="changeMonth(-1)">‹</button>
     <div class="month-label" id="month-label"></div>
     <button class="month-nav" onclick="changeMonth(1)">›</button>
   </div>
-
-  <div class="summary-row">
-    <div class="summary-card card-sum">
-      <div class="s-label">💳 カード</div>
-      <div class="s-value" id="sum-card">¥0</div>
-    </div>
-    <div class="summary-card cash-sum">
-      <div class="s-label">💴 現金</div>
-      <div class="s-value" id="sum-cash">¥0</div>
-    </div>
-    <div class="summary-card total-sum">
-      <div class="s-label">合計</div>
-      <div class="s-value" id="sum-total">¥0</div>
-    </div>
+  <div class="summary-row three">
+    <div class="summary-card card-sum"><div class="s-label">💳 カード</div><div class="s-value" id="sum-card">¥0</div></div>
+    <div class="summary-card cash-sum"><div class="s-label">💴 現金</div><div class="s-value" id="sum-cash">¥0</div></div>
+    <div class="summary-card total-sum"><div class="s-label">合計</div><div class="s-value" id="sum-total">¥0</div></div>
   </div>
-
   <div class="record-list" id="record-list"></div>
+</div>
+
+<!-- EXPENSE INPUT -->
+<div id="tab-exp-input" class="tab-content">
+  <div class="date-row">
+    <label>日付</label>
+    <input type="date" id="exp-date">
+  </div>
+  <div class="section-label">金額</div>
+  <div class="exp-amount-wrap">
+    <span>¥</span>
+    <input type="number" id="exp-amount" placeholder="金額を入力" min="0" step="1" oninput="checkExpReady()">
+  </div>
+  <div class="section-label">科目</div>
+  <div class="cat-grid">
+    <button class="cat-btn" data-cat="交通費" onclick="selectCat(this)">🚃 交通費</button>
+    <button class="cat-btn" data-cat="接待交際費" onclick="selectCat(this)">🍽 接待交際費</button>
+    <button class="cat-btn" data-cat="消耗品費" onclick="selectCat(this)">📦 消耗品費</button>
+    <button class="cat-btn" data-cat="通信費" onclick="selectCat(this)">📱 通信費</button>
+    <button class="cat-btn" data-cat="車両費" onclick="selectCat(this)">🚗 車両費</button>
+  </div>
+  <button class="add-btn" id="exp-add-btn" onclick="addExpense()" disabled>追加する</button>
+</div>
+
+<!-- EXPENSE HISTORY -->
+<div id="tab-exp-history" class="tab-content">
+  <div class="month-header">
+    <button class="month-nav" onclick="changeExpMonth(-1)">‹</button>
+    <div class="month-label" id="exp-month-label"></div>
+    <button class="month-nav" onclick="changeExpMonth(1)">›</button>
+  </div>
+  <div class="summary-row two">
+    <div class="summary-card total-sum"><div class="s-label">月合計</div><div class="s-value" id="exp-sum-total">¥0</div></div>
+    <div class="summary-card exp-sum"><div class="s-label">件数</div><div class="s-value" id="exp-count">0件</div></div>
+  </div>
+  <div class="cat-totals" id="cat-totals"></div>
+  <div class="record-list" id="exp-record-list"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // --- State ---
-  let records = JSON.parse(localStorage.getItem('parkingRecords') || '[]');
-  let selectedAmount = null;
-  let selectedMethod = null;
-  let isCustom = false;
-  let viewYear, viewMonth;
+  let records  = JSON.parse(localStorage.getItem('parkingRecords')  || '[]');
+  let expenses = JSON.parse(localStorage.getItem('expenseRecords')  || '[]');
+  let selectedAmount = null, selectedMethod = null, isCustom = false;
+  let selectedCat = null;
+  let viewYear, viewMonth, expViewYear, expViewMonth;
 
-  // --- Init ---
+  const CATS = ['交通費','接待交際費','消耗品費','通信費','車両費'];
+
   function init() {
     const now = new Date();
-    const todayStr = toDateStr(now);
-    document.getElementById('input-date').value = todayStr;
-    document.getElementById('today-display').textContent = formatDate(todayStr);
-
-    viewYear = now.getFullYear();
-    viewMonth = now.getMonth() + 1;
-
+    const today = toDateStr(now);
+    document.getElementById('input-date').value = today;
+    document.getElementById('exp-date').value = today;
+    document.getElementById('today-display').textContent = today;
+    viewYear = expViewYear = now.getFullYear();
+    viewMonth = expViewMonth = now.getMonth() + 1;
     renderHistory();
+    renderExpHistory();
   }
 
   function toDateStr(d) {
-    return d.toFullYear
-      ? d
-      : `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   }
 
-  function formatDate(str) {
-    const [y,m,d] = str.split('-');
-    return `${y}年${parseInt(m)}月${parseInt(d)}日`;
-  }
+  function fmt(n) { return '¥' + n.toLocaleString(); }
+  function fmtDate(str) { const [,m,d] = str.split('-'); return `${parseInt(m)}/${parseInt(d)}`; }
 
-  function formatMoney(n) {
-    return '¥' + n.toLocaleString();
-  }
-
-  // --- Amount selection ---
+  // Parking
   function selectAmount(btn) {
     document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('custom-wrap').classList.remove('selected');
     document.getElementById('custom-amount').value = '';
     btn.classList.add('selected');
     selectedAmount = parseInt(btn.dataset.amount);
-    isCustom = false;
-    checkReady();
+    isCustom = false; checkReady();
   }
 
   function selectCustom() {
@@ -558,60 +377,37 @@
 
   function onCustomInput() {
     const v = parseInt(document.getElementById('custom-amount').value);
-    selectedAmount = v > 0 ? v : null;
-    checkReady();
+    selectedAmount = v > 0 ? v : null; checkReady();
   }
 
-  // --- Method selection ---
   function selectMethod(btn) {
     document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    selectedMethod = btn.dataset.method;
-    checkReady();
+    selectedMethod = btn.dataset.method; checkReady();
   }
 
   function checkReady() {
     document.getElementById('add-btn').disabled = !(selectedAmount && selectedMethod);
   }
 
-  // --- Add record ---
   function addRecord() {
     const date = document.getElementById('input-date').value;
     if (!date || !selectedAmount || !selectedMethod) return;
-
-    const record = {
-      id: Date.now(),
-      date,
-      amount: selectedAmount,
-      method: selectedMethod
-    };
-
-    records.push(record);
+    records.push({ id: Date.now(), date, amount: selectedAmount, method: selectedMethod });
     records.sort((a,b) => b.date.localeCompare(a.date));
-    save();
-
-    // reset
+    localStorage.setItem('parkingRecords', JSON.stringify(records));
     document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('custom-wrap').classList.remove('selected');
     document.getElementById('custom-amount').value = '';
     document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('selected'));
-    selectedAmount = null;
-    selectedMethod = null;
-    isCustom = false;
-    checkReady();
-
-    showToast('記録しました！');
-
-    // refresh history if visible
+    selectedAmount = null; selectedMethod = null; isCustom = false; checkReady();
     const [y,m] = date.split('-');
-    viewYear = parseInt(y);
-    viewMonth = parseInt(m);
-    renderHistory();
+    viewYear = parseInt(y); viewMonth = parseInt(m);
+    renderHistory(); showToast('記録しました！');
   }
 
-  // --- History ---
-  function changeMonth(delta) {
-    viewMonth += delta;
+  function changeMonth(d) {
+    viewMonth += d;
     if (viewMonth > 12) { viewMonth = 1; viewYear++; }
     if (viewMonth < 1)  { viewMonth = 12; viewYear--; }
     renderHistory();
@@ -619,69 +415,111 @@
 
   function renderHistory() {
     document.getElementById('month-label').textContent = `${viewYear}年${viewMonth}月`;
-
-    const monthStr = `${viewYear}-${String(viewMonth).padStart(2,'0')}`;
-    const filtered = records.filter(r => r.date.startsWith(monthStr));
-
-    const sumCard = filtered.filter(r=>r.method==='card').reduce((s,r)=>s+r.amount,0);
-    const sumCash = filtered.filter(r=>r.method==='cash').reduce((s,r)=>s+r.amount,0);
-
-    document.getElementById('sum-card').textContent = formatMoney(sumCard);
-    document.getElementById('sum-cash').textContent = formatMoney(sumCash);
-    document.getElementById('sum-total').textContent = formatMoney(sumCard + sumCash);
-
+    const ms = `${viewYear}-${String(viewMonth).padStart(2,'0')}`;
+    const f = records.filter(r => r.date.startsWith(ms));
+    const sc = f.filter(r=>r.method==='card').reduce((s,r)=>s+r.amount,0);
+    const sh = f.filter(r=>r.method==='cash').reduce((s,r)=>s+r.amount,0);
+    document.getElementById('sum-card').textContent = fmt(sc);
+    document.getElementById('sum-cash').textContent = fmt(sh);
+    document.getElementById('sum-total').textContent = fmt(sc+sh);
     const list = document.getElementById('record-list');
-    if (filtered.length === 0) {
-      list.innerHTML = '<div class="empty-msg">この月の記録はありません</div>';
-      return;
-    }
-
-    list.innerHTML = filtered.map(r => `
-      <div class="record-item" id="rec-${r.id}">
-        <div class="record-date">${formatDateShort(r.date)}</div>
-        <div class="record-amount">${formatMoney(r.amount)}</div>
-        <span class="method-badge ${r.method}">${r.method==='card'?'カード':'現金'}</span>
-        <button class="delete-btn" onclick="deleteRecord(${r.id})" title="削除">✕</button>
-      </div>
-    `).join('');
-  }
-
-  function formatDateShort(str) {
-    const [,m,d] = str.split('-');
-    return `${parseInt(m)}/${parseInt(d)}`;
+    if (!f.length) { list.innerHTML = '<div class="empty-msg">この月の記録はありません</div>'; return; }
+    list.innerHTML = f.map(r => `
+      <div class="record-item">
+        <div class="record-date">${fmtDate(r.date)}</div>
+        <div class="record-amount">${fmt(r.amount)}</div>
+        <span class="badge ${r.method}">${r.method==='card'?'カード':'現金'}</span>
+        <button class="delete-btn" onclick="deleteRecord(${r.id})">✕</button>
+      </div>`).join('');
   }
 
   function deleteRecord(id) {
     records = records.filter(r => r.id !== id);
-    save();
-    renderHistory();
-    showToast('削除しました');
+    localStorage.setItem('parkingRecords', JSON.stringify(records));
+    renderHistory(); showToast('削除しました');
   }
 
-  // --- Tab switch ---
-  function switchTab(tab) {
+  // Expense
+  function selectCat(btn) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedCat = btn.dataset.cat; checkExpReady();
+  }
+
+  function checkExpReady() {
+    const v = parseInt(document.getElementById('exp-amount').value);
+    document.getElementById('exp-add-btn').disabled = !(v > 0 && selectedCat);
+  }
+
+  function addExpense() {
+    const date = document.getElementById('exp-date').value;
+    const amount = parseInt(document.getElementById('exp-amount').value);
+    if (!date || !amount || !selectedCat) return;
+    expenses.push({ id: Date.now(), date, amount, cat: selectedCat });
+    expenses.sort((a,b) => b.date.localeCompare(a.date));
+    localStorage.setItem('expenseRecords', JSON.stringify(expenses));
+    document.getElementById('exp-amount').value = '';
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+    selectedCat = null; checkExpReady();
+    const [y,m] = date.split('-');
+    expViewYear = parseInt(y); expViewMonth = parseInt(m);
+    renderExpHistory(); showToast('記録しました！');
+  }
+
+  function changeExpMonth(d) {
+    expViewMonth += d;
+    if (expViewMonth > 12) { expViewMonth = 1; expViewYear++; }
+    if (expViewMonth < 1)  { expViewMonth = 12; expViewYear--; }
+    renderExpHistory();
+  }
+
+  function renderExpHistory() {
+    document.getElementById('exp-month-label').textContent = `${expViewYear}年${expViewMonth}月`;
+    const ms = `${expViewYear}-${String(expViewMonth).padStart(2,'0')}`;
+    const f = expenses.filter(r => r.date.startsWith(ms));
+    const total = f.reduce((s,r) => s+r.amount, 0);
+    document.getElementById('exp-sum-total').textContent = fmt(total);
+    document.getElementById('exp-count').textContent = f.length + '件';
+    const byCat = {};
+    CATS.forEach(c => byCat[c] = 0);
+    f.forEach(r => { if (byCat[r.cat] !== undefined) byCat[r.cat] += r.amount; });
+    const active = CATS.filter(c => byCat[c] > 0);
+    document.getElementById('cat-totals').innerHTML = active.map(c => `
+      <div class="cat-total-row">
+        <span class="cat-name">${c}</span>
+        <span class="cat-val">${fmt(byCat[c])}</span>
+      </div>`).join('');
+    const list = document.getElementById('exp-record-list');
+    if (!f.length) { list.innerHTML = '<div class="empty-msg">この月の記録はありません</div>'; return; }
+    list.innerHTML = f.map(r => `
+      <div class="record-item">
+        <div class="record-date">${fmtDate(r.date)}</div>
+        <div class="record-amount">${fmt(r.amount)}</div>
+        <span class="badge cat">${r.cat}</span>
+        <button class="delete-btn" onclick="deleteExpense(${r.id})">✕</button>
+      </div>`).join('');
+  }
+
+  function deleteExpense(id) {
+    expenses = expenses.filter(r => r.id !== id);
+    localStorage.setItem('expenseRecords', JSON.stringify(expenses));
+    renderExpHistory(); showToast('削除しました');
+  }
+
+  function switchTab(tab, btn) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    document.getElementById(`tab-${tab}`).classList.add('active');
-    event.currentTarget.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    btn.classList.add('active');
     if (tab === 'history') renderHistory();
+    if (tab === 'exp-history') renderExpHistory();
   }
 
-  // --- Toast ---
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 1800);
   }
-
-  // --- Storage ---
-  function save() {
-    localStorage.setItem('parkingRecords', JSON.stringify(records));
-  }
-
-  // --- Date helper ---
-  Date.prototype.toFullYear = undefined; // not needed
 
   init();
 </script>
